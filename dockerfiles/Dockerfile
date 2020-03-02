@@ -137,3 +137,13 @@ CMD "$@"
 
 # Labels
 LABEL maintainer="Ryan Craig"
+
+LABEL org.label-schema.schema-version="1.0"
+#LABEL org.label-schema.build-date=$BUILD_DATE
+LABEL org.label-schema.name="devtestlabs/terraform"
+LABEL org.label-schema.description="Hashicorp Terraform for AWS resource provisioning and management"
+#LABEL org.label-schema.url=$ORG_WEB_URL
+LABEL org.label-schema.vcs-url=$VCS_URL
+LABEL org.label-schema.vcs-ref=$VCS_REF
+LABEL org.label-schema.vendor="devtestlabs.xyz"
+LABEL org.label-schema.version=$IMAGE_LONG_VERSION
