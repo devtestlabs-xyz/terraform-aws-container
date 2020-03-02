@@ -12,6 +12,11 @@ ARG TEMPLATE_PROVIDER_VERSION=2.1.2
 ARG NULL_PROVIDER_VERSION=2.1.2
 ARG RANDOM_PROVIDER_VERSION=2.2.1
 
+ARG IMAGE_BUILD_DATE
+ARG VCS_REF
+ARG VCS_URL
+ARG IMAGE_LONG_VERSION
+
 # Required to build Docker image; removed in cleanup process
 ENV APK_VIRTUAL_PACKAGE_DEPS \
   git \
@@ -139,7 +144,7 @@ CMD "$@"
 LABEL maintainer="Ryan Craig"
 
 LABEL org.label-schema.schema-version="1.0"
-#LABEL org.label-schema.build-date=$BUILD_DATE
+LABEL org.label-schema.build-date=$IMAGE_BUILD_DATE
 LABEL org.label-schema.name="devtestlabs/terraform"
 LABEL org.label-schema.description="Hashicorp Terraform for AWS resource provisioning and management"
 #LABEL org.label-schema.url=$ORG_WEB_URL
