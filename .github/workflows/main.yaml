@@ -1,0 +1,40 @@
+name: Build and Publish Docker image
+ 
+on:
+  push:
+    paths:
+    - 'dockerfiles/**'
+    - '!dockerfiles/.dockerignore'  
+
+env:
+  _GH_BASE_URI: https://github.com/
+  _TERRAFORM_VERSION: 0.12.20
+  _BASE_IMAGE_VERSION: 0.12.20
+#   _BASE_IMAGE: alpine
+  _IMAGE_VARIANT: aws
+  _AWS_PROVIDER_VERSION: 2.42.0
+  _CONSUL_PROVIDER_VERSION: 2.6.1
+  _TEMPLATE_PROVIDER_VERSION: 2.1.2
+  _NULL_PROVIDER_VERSION: 2.1.2
+  _RANDOM_PROVIDER_VERSION: 2.2.1
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Publish to Docker Repository
+        env:
+          _IMAGE_LONG_VERSION: ${{ env._TERRAFORM_VERSION }}-${{ env._IMAGE_VARIANT }}-${{steps.date.outputs.date}}
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          context: dockerfiles
+          buildargs: BASE_IMAGE_VERSION=${{ env._BASE_IMAGE_VERSION }}, AWS_PROVIDER_VERSION=${{ env._AWS_PROVIDER_VERSION }}, CONSUL_PROVIDER_VERSION=${{ env._CONSUL_PROVIDER_VERSION }}, TEMPLATE_PROVIDER_VERSION=${{ env._TEMPLATE_PROVIDER_VERSION }}, NULL_PROVIDER_VERSION=${{ env._NULL_PROVIDER_VERSION }}, RANDOM_PROVIDER_VERSION=${{ env._RANDOM_PROVIDER_VERSION }}, VCS_URL=${{ env._GH_BASE_URI }}${{ env.GITHUB_REPOSITORY }}, VCS_REF=${{ env.GITHUB_SHA }}, IMAGE_LONG_VERSION=${{ env._IMAGE_LONG_VERSION }}
+          name: ${{ secrets.DOCKERHUB_REPO }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PAT }}
+          tags: ${{ env._IMAGE_LONG_VERSION }}, ${{ env._IMAGE_VARIANT }}

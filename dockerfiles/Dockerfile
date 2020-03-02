@@ -2,9 +2,10 @@
 # https://hub.docker.com/r/hashicorp/terraform/tags
 # latest = latest light image
 # source dockerfile https://github.com/hashicorp/terraform/blob/master/scripts/docker-release/Dockerfile-release
-FROM hashicorp/terraform:0.12.20
+ARG BASE_IMAGE_VERSION
+FROM hashicorp/terraform:${BASE_IMAGE_VERSION}
 
-# Pass in value from CI/CD
+# Pass in value from GH Actions
 ARG AWS_PROVIDER_VERSION=2.42.0
 ARG CONSUL_PROVIDER_VERSION=2.6.1
 ARG TEMPLATE_PROVIDER_VERSION=2.1.2
