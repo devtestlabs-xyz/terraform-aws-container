@@ -1,0 +1,9 @@
+# Ignore
+**/.env*
+**/.terraform
+**/*.tfstate
+**/*.tfstate.backup
+hostenv
+
+# Allow
+!**/.env.example

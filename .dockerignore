@@ -1,0 +1,10 @@
+README.md
+*.md
+*.adoc
+*.ascii
+*.txt
+**/.env
+**/.env*
+**/live
+**/.gitignore
+hostenv
