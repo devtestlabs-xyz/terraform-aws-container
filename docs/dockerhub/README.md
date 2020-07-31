@@ -1,10 +1,12 @@
 # Terraform for AWS resource provisioning and management
-This image an extremely lightweight [Hashicorp Terraform](https://www.terraform.io/) [OCI compliant](https://www.opencontainers.org/) container image that runs on [Docker](https://www.docker.com/), [Podman](https://podman.io/), and [Kubernetes](https://kubernetes.io/). This Terraform container is purpose-built to provision and manage AWS resources.
+This image an extremely lightweight [Hashicorp Terraform](https://www.terraform.io/) [OCI compliant](https://www.opencontainers.org/) container image that runs on [Docker](https://www.docker.com/) and [Podman](https://podman.io/). This Terraform container is purpose-built to provision and manage AWS resources.
+
+The base image is the [official Hashicorp Terraform image](https://hub.docker.com/r/hashicorp/terraform/) which is based on the [official Alpine Linux image](https://hub.docker.com/_/alpine).
 
 ## Latest container image
 ### Tags
-* 0.12.29-aws-3ce5af83 ({{  TERRAFORM_VERSION }}-{{ IMAGE_VARIANT }}-{{ GITHUB_8BIT_COMMIT_HASH }})
-* 0.12.29-aws-20200731T215942Z ({{  TERRAFORM_VERSION }}-{{ IMAGE_VARIANT }}-{{ DATETIME_%Y%m%dT%H%M%SZ }})
+* 0.12.29-aws-daf8201b ({{  TERRAFORM_VERSION }}-{{ IMAGE_VARIANT }}-{{ GITHUB_8BIT_COMMIT_HASH }})
+* 0.12.29-aws-20200731T224002Z ({{  TERRAFORM_VERSION }}-{{ IMAGE_VARIANT }}-{{ DATETIME_%Y%m%dT%H%M%SZ }})
 * aws
 
 *NOTE: For production environments always pin a long version.*
@@ -89,5 +91,5 @@ docker run \
 devtestlabs/terraform-aws init
 ```
 
-## Github project
+# Github project
 https://github.com/devtestlabs-xyz/terraform-aws-container
