@@ -1,0 +1,56 @@
+name: Build and Publish Docker image
+ 
+on:
+  push:
+    paths:
+    - 'dockerfiles/**'
+    - '!dockerfiles/.dockerignore'  
+    - '.requirements/terraform-provider-aws.version'
+    - '.requirements/terraform-provider-consul.version'
+    - '.requirements/terraform-provider-null.version'
+    - '.requirements/terraform-provider-random.version'
+    - '.requirements/terraform-provider-template.version'
+    - '.requirements/terraform.version'
+    - '!dockerfiles/alpine/README.md' 
+
+env:
+  _GH_BASE_URI: https://github.com/
+  _IMAGE_VARIANT: aws
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set _BUILD_DATETIME env variable to current datetime
+        run: echo "::set-env name=_BUILD_DATETIME::$(date -u +'%Y%m%dT%H%M%SZ')"
+      - name: Get Github commit short SHA
+        run: echo "::set-env name=_GH_SHA8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+      - name: Set _TERRAFORM_VERSION env variable
+        run: echo ::set-env name=_TERRAFORM_VERSION::$(cat ./.requirements/terraform.version)
+      - name: Set _BASE_IMAGE_VERSION env variable
+        run: echo ::set-env name=_BASE_IMAGE_VERSION::$(cat ./.requirements/terraform.version)  
+      - name: Set _AWS_PROVIDER_VERSION env variable
+        run: echo ::set-env name=_AWS_PROVIDER_VERSION::$(cat ./.requirements/terraform-provider-aws.version) 
+      - name: Set _CONSUL_PROVIDER_VERSION env variable
+        run: echo ::set-env name=_CONSUL_PROVIDER_VERSION::$(cat ./.requirements/terraform-provider-consul.version) 
+      - name: Set _TEMPLATE_PROVIDER_VERSION env variable
+        run: echo ::set-env name=_TEMPLATE_PROVIDER_VERSION::$(cat ./.requirements/terraform-provider-template.version)
+      - name: Set _NULL_PROVIDER_VERSION env variable
+        run: echo ::set-env name=_NULL_PROVIDER_VERSION::$(cat ./.requirements/terraform-provider-null.version)
+      - name: Set _RANDOM_PROVIDER_VERSION env variable
+        run: echo ::set-env name=_RANDOM_PROVIDER_VERSION::$(cat ./.requirements/terraform-provider-random.version)
+
+      - name: Publish to Docker Repository
+        env:
+          _IMAGE_LONG_VERSION_DT: ${{ env._TERRAFORM_VERSION }}-${{ env._IMAGE_VARIANT }}-${{ env._BUILD_DATETIME }}
+          _IMAGE_LONG_VERSION_HASH: ${{ env._TERRAFORM_VERSION }}-${{ env._IMAGE_VARIANT }}-${{ env._GH_SHA8 }}
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          context: dockerfiles
+          buildargs: BASE_IMAGE_VERSION=${{ env._BASE_IMAGE_VERSION }}, AWS_PROVIDER_VERSION=${{ env._AWS_PROVIDER_VERSION }}, CONSUL_PROVIDER_VERSION=${{ env._CONSUL_PROVIDER_VERSION }}, TEMPLATE_PROVIDER_VERSION=${{ env._TEMPLATE_PROVIDER_VERSION }}, NULL_PROVIDER_VERSION=${{ env._NULL_PROVIDER_VERSION }}, RANDOM_PROVIDER_VERSION=${{ env._RANDOM_PROVIDER_VERSION }}, VCS_URL=${{ env._GH_BASE_URI }}${{ env.GITHUB_REPOSITORY }}, VCS_REF=${{ env.GITHUB_SHA }}, IMAGE_LONG_VERSION=${{ env._IMAGE_LONG_VERSION_DT }}, IMAGE_BUILD_DATE=${{ env._BUILD_DATETIME }}
+          name: ${{ secrets.DOCKERHUB_REPO }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PAT }}
+          tags: ${{ env._IMAGE_LONG_VERSION_DT }}, ${{ env._IMAGE_LONG_VERSION_HASH }}, ${{ env._IMAGE_VARIANT }}

@@ -6,11 +6,11 @@ ARG BASE_IMAGE_VERSION
 FROM hashicorp/terraform:${BASE_IMAGE_VERSION}
 
 # Pass in value from GH Actions
-ARG AWS_PROVIDER_VERSION=2.42.0
-ARG CONSUL_PROVIDER_VERSION=2.6.1
-ARG TEMPLATE_PROVIDER_VERSION=2.1.2
-ARG NULL_PROVIDER_VERSION=2.1.2
-ARG RANDOM_PROVIDER_VERSION=2.2.1
+ARG AWS_PROVIDER_VERSION
+ARG CONSUL_PROVIDER_VERSION
+ARG TEMPLATE_PROVIDER_VERSION
+ARG NULL_PROVIDER_VERSION
+ARG RANDOM_PROVIDER_VERSION
 
 ARG IMAGE_BUILD_DATE
 ARG VCS_REF
@@ -41,8 +41,8 @@ RUN set -x && \
     gpg --import releases_public_key && \
     \
     echo "==> Fetching AWS provider plugin..." && \
-    wget https://releases.hashicorp.com/terraform-provider-aws/2.42.0/terraform-provider-aws_${AWS_PROVIDER_VERSION}_SHA256SUMS && \
-    wget https://releases.hashicorp.com/terraform-provider-aws/2.42.0/terraform-provider-aws_${AWS_PROVIDER_VERSION}_SHA256SUMS.sig && \
+    wget https://releases.hashicorp.com/terraform-provider-aws/${AWS_PROVIDER_VERSION}/terraform-provider-aws_${AWS_PROVIDER_VERSION}_SHA256SUMS && \
+    wget https://releases.hashicorp.com/terraform-provider-aws/${AWS_PROVIDER_VERSION}/terraform-provider-aws_${AWS_PROVIDER_VERSION}_SHA256SUMS.sig && \
     wget https://releases.hashicorp.com/terraform-provider-aws/${AWS_PROVIDER_VERSION}/terraform-provider-aws_${AWS_PROVIDER_VERSION}_linux_amd64.zip && \
     \
     echo "==> Verifying Hashicorp signature and binary checksums..." && \
