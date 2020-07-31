@@ -1,5 +1,5 @@
 # terraform-aws-container
-This project manages the assets required to build and publish an extremely lightweight [Hashicorp Terraform](https://www.terraform.io/) [OCI compliant](https://www.opencontainers.org/) container image that runs on [Docker](https://www.docker.com/), [Podman](https://podman.io/), and [Kubernetes](https://kubernetes.io/). This Terraform container is purpose-built to provision and manage AWS resources.
+This project manages the assets required to build and publish an extremely lightweight [Hashicorp Terraform](https://www.terraform.io/) [OCI compliant](https://www.opencontainers.org/) container image that runs on [Docker](https://www.docker.com/) and [Podman](https://podman.io/). This Terraform container is purpose-built to provision and manage AWS resources.
 
 
 # Run Docker container
@@ -8,8 +8,8 @@ Ensure the follow prerequisites are satisfied:
 
 * Valid, active AWS IAM user exists
 * Docker image is locally avaiable or can be pulled from a container repository such as DockerHub, ACR, etc
-* `.env` file with applicable environment variable definitions or environment variables passed to Docker via the CLI
-* Terraform `*.tf` configuration file is in $PWD
+* `.env` file with applicable environment variable definitions or environment variables passed to Docker via the CLI *NOTE: You can copy the `.env.example` file and change the environment variable values to valid values. `.gitignore` entries are in place to help protect you from committing your `.env.* file. DO NOT commit secrets to your repo!*
+* Terraform `providers-init.tf` configuration file is in `$PWD/dockerfiles`
 
 ```
 docker run \
@@ -30,36 +30,11 @@ devtestlabs/terraform-aws init
 ```
 
 # Test container
-## Verify Terraform finds and initializes all installed Provider plugins
-Create `live` directory.
-
-Create `providers-test.tf `file with the following contents:
-
-```
-# All providers installed in this container
-provider "aws" {
-  version = "~> 2.42.0"  
-}
-
-provider "consul" {
-  version = "~> 2.6.1"
-}
-
-provider "template" {
-  version = "~> 2.1.2"
-}
-
-provider "random" {
-  version = "~> 2.2.1"
-}
-
-provider "null" {
-  version = "~> 2.1.2"
-}
-```
+## Verify Terraform finds all expected providers
 
 In project root path, execute:
-```
+
+```shell
 docker run \
 --rm -it \
 -v $(pwd)/live:/terraform \
@@ -78,7 +53,8 @@ AWS_DEFAULT_REGION={{ YOUR_AWS_DEFAULT_REGION }}
 *NOTE: Replace {{ YOUR_*** }} with a valid value. If you don't want to persist secrets to file, you can also set host environment variables and reference these environment variables in your `.env` file (example: `AWS_ACCESS_KEY_ID=$MY_AWS_ACCESS_KEY_ID` where `$MY_AWS_ACCESS_KEY_ID` is the host environment variable).*
 
 Execute:
-```
+
+```shell
 docker run \
 --rm -it \
 -v $(pwd)/live/:/terraform-live \
@@ -87,7 +63,7 @@ devtestlabs/terraform-aws init
 ```
 
 *example*
-```
+```shell
 docker run \
 --rm -it \
 -v $(pwd)/live:/terraform-live \
@@ -101,11 +77,23 @@ devtestlabs/terraform-aws init
 * Clone this GitHub project.
 
 ## Build the image
-* `cd` into the project root path.
+* `cd` into the `./dockerfiles`
 
-```
+*Docker*
+```shell
 docker build -t terraform-aws .
 ```
+
+*Podman*
+```shell
+podman build -t terraform-aws .
+```
+
+# Dockerhub repository
+Container images are automatically published to `devtestlabs/terraform` Dockerhub repository.
+
+https://hub.docker.com/r/devtestlabs/terraform
+
 
 # External References
 * https://www.terraform.io/docs/configuration/providers.html

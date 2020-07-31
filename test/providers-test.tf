@@ -1,3 +1,4 @@
+# All providers should be onboard and initialized in this container
 # https://www.terraform.io/docs/providers/aws/index.html
 provider "aws" {
   version = "~> 3.0.0"  
