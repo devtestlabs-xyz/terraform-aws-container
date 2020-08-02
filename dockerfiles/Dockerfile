@@ -138,8 +138,9 @@ ENV AWS_DEFAULT_REGION=UNDEFINED
 # ECS and CodeBuild Task Roles
 ##ENV AWS_CONTAINER_CREDENTIALS_RELATIVE_URI=UNDEFINED
 
-ENTRYPOINT [ "terraform" ]
-CMD "$@"
+# ENTRYPOINT [ "terraform" ]
+ENTRYPOINT [ "$@" ]
+# CMD "$@"
 
 # Labels
 LABEL maintainer="Ryan Craig"

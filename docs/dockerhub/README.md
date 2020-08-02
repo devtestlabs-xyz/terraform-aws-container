@@ -5,8 +5,8 @@ The base image is the [official Hashicorp Terraform image](https://hub.docker.co
 
 ## Latest container image
 ### Tags
-* 0.12.29-aws-daf8201b ({{  TERRAFORM_VERSION }}-{{ IMAGE_VARIANT }}-{{ GITHUB_8BIT_COMMIT_HASH }})
-* 0.12.29-aws-20200731T224002Z ({{  TERRAFORM_VERSION }}-{{ IMAGE_VARIANT }}-{{ DATETIME_%Y%m%dT%H%M%SZ }})
+* 0.12.29-aws-14138182 ({{  TERRAFORM_VERSION }}-{{ IMAGE_VARIANT }}-{{ GITHUB_8BIT_COMMIT_HASH }})
+* 0.12.29-aws-20200731T230752Z ({{  TERRAFORM_VERSION }}-{{ IMAGE_VARIANT }}-{{ DATETIME_%Y%m%dT%H%M%SZ }})
 * aws
 
 *NOTE: For production environments always pin a long version.*
@@ -36,7 +36,7 @@ docker run \
 --rm -it \
 -v $(pwd)/live:/terraform-live \
 --env-file=.env.local \
-devtestlabs/terraform-aws init
+devtestlabs/terraform:aws init
 ```
 
 ```
@@ -46,7 +46,7 @@ docker run \
 -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
 -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
 -e AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
-devtestlabs/terraform-aws init
+devtestlabs/terraform:aws init
 ```
 
 # Test container
@@ -54,11 +54,17 @@ devtestlabs/terraform-aws init
 
 In project root path, execute:
 
+*Docker*
 ```shell
 docker run \
 --rm -it \
--v $(pwd)/live:/terraform \
-devtestlabs/terraform-aws init
+-v $(pwd)/live:/terraform-live \
+devtestlabs/terraform:aws init
+```
+
+*Podman*
+```shell
+podman run -it -v $(pwd)/live:/terraform devtestlabs/terraform:aws init
 ```
 
 ## Verify connectivity to AWS
@@ -74,22 +80,28 @@ AWS_DEFAULT_REGION={{ YOUR_AWS_DEFAULT_REGION }}
 
 Execute:
 
+*Docker*
 ```shell
 docker run \
 --rm -it \
--v $(pwd)/live/:/terraform-live \
+-v $(pwd)/test/:/terraform-live \
 --env-file=.env.local \
 devtestlabs/terraform-aws init
 ```
 
-*example*
+*Docker example*
 ```shell
 docker run \
 --rm -it \
--v $(pwd)/live:/terraform-live \
+-v $(pwd)/test:/terraform-live \
 --env-file=.env.local \
 devtestlabs/terraform-aws init
 ```
 
+*Podman example*
+```shell
+podman run -it -v $(pwd)/test:/terraform-live:Z --env-file=.env.local devtestlabs/terraform:aws init
+```
 # Github project
+
 https://github.com/devtestlabs-xyz/terraform-aws-container
