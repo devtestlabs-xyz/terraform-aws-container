@@ -8,7 +8,7 @@ then
   terraform init -input=false -backend-config="backend.hcl" -no-color
   _outcome=$(terraform show -json -no-color ${TFPLAN} 2>&1)
 else
-  exec "$@"
+  _outcome=$(exec "$@" 2>&1)
 fi
 
 echo "::set-output name=outcome::$_outcome"
