@@ -4,8 +4,8 @@ set -e
 
 if [ $2 = "show" ]
 then
-  init -input=false -backend-config="./live/biz/consul-servers/backend.hcl" -no-color ./live/biz/consul-servers
-  show -json -no-color ./live/biz/consul-servers/${TFPLAN}
+  terraform init -input=false -backend-config="./live/biz/consul-servers/backend.hcl" -no-color ./live/biz/consul-servers
+  terraform show -json -no-color ./live/biz/consul-servers/${TFPLAN}
 else
   exec "$@"
 fi
