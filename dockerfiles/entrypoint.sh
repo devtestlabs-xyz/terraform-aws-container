@@ -2,7 +2,7 @@
 
 set -e
 
-if ["$2" = 'show']
+if [ $2 = "show" ]
 then
   init -input=false -backend-config="./live/biz/consul-servers/backend.hcl" -no-color ./live/biz/consul-servers
   show -json -no-color ./live/biz/consul-servers/${TFPLAN}
