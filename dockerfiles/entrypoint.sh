@@ -4,8 +4,9 @@ set -e
 
 if [ $2 = "show" ]
 then
-  terraform init -input=false -backend-config="${GITHUB_WORKSPACE}/live/biz/consul-servers/backend.hcl" -no-color ${GITHUB_WORKSPACE}/live/biz/consul-servers
-  terraform show -json -no-color "${GITHUB_WORKSPACE}/live/biz/consul-servers/${TFPLAN}"
+  cd ${GITHUB_WORKSPACE}/live/biz/consul-servers
+  terraform init -input=false -backend-config="backend.hcl" -no-color
+  terraform show -json -no-color ${TFPLAN}
 else
   exec "$@"
 fi
