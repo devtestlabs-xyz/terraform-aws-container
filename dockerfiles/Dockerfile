@@ -24,6 +24,10 @@ ENV APK_VIRTUAL_PACKAGE_DEPS \
   gnupg \
   wget
 
+# Scripted entrypoint to allow specialized terraform commands and output when container is used in Github actions
+COPY entrypoint.sh /usr/local/bin
+RUN ln -s /usr/local/bin/entrypoint.sh / # backwards compat
+
 # Terraform environment variables
 ENV TF_PLUGIN_CACHE_DIR=/.terraform/plugin-cache
 
@@ -114,6 +118,7 @@ RUN set -x \
     && rm -f terraform-provider-random_${RANDOM_PROVIDER_VERSION}_linux_amd64.zip terraform-provider-random_${RANDOM_PROVIDER_VERSION}_SHA256SUMS terraform-provider-random_${RANDOM_PROVIDER_VERSION}_SHA256SUMS.sig \
     && rm -f terraform-provider-null_${NULL_PROVIDER_VERSION}_linux_amd64.zip terraform-provider-null_${NULL_PROVIDER_VERSION}_SHA256SUMS terraform-provider-null_${NULL_PROVIDER_VERSION}_SHA256SUMS.sig \
     && rm -f releases_public_key \
+    && chmod +x /usr/local/bin/entrypoint.sh \
     && \
     echo "==> Initializing installed Terraform providers..." \
     && terraform init
@@ -138,8 +143,9 @@ ENV AWS_DEFAULT_REGION=UNDEFINED
 # ECS and CodeBuild Task Roles
 ##ENV AWS_CONTAINER_CREDENTIALS_RELATIVE_URI=UNDEFINED
 
-ENTRYPOINT [ "terraform" ]
-CMD "$@"
+# ENTRYPOINT [ "terraform" ]
+# CMD "$@"
+ENTRYPOINT ["entrypoint.sh"]
 
 # Labels
 LABEL maintainer="Ryan Craig"
