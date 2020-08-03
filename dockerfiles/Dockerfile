@@ -119,9 +119,9 @@ RUN set -x \
     && terraform init
 
 # /terraform will contain all terraform assets including mounted live configurations
-WORKDIR /terraform-live
+# WORKDIR /terraform-live
 
-VOLUME [ "/terraform-live" ]
+# VOLUME [ "/terraform-live" ]
 
 # Credentials
 ENV AWS_ACCESS_KEY_ID=UNDEFINED
