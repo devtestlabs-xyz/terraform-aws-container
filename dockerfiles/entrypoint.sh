@@ -12,7 +12,7 @@ cd ${GITHUB_WORKSPACE}/${_TF_CONFIG_PATH}
 if [ "$2" = "show" ]; then 
   terraform init -input=false -backend-config="backend.hcl" -no-color
 #   terraform show -json -no-color ${TFPLAN}
-  _outcome=$(exec "$@")
+  _outcome=$(exec "$1 $2 $3")
 elif [ "$2" = "init" ]; then
   _outcome=$(exec "$@")
 elif [ "$2" = "fmt" ]; then 
