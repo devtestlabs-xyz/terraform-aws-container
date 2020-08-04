@@ -24,7 +24,10 @@ else
   echo "Command is not currently supported."
 fi
 
-# Encode for multi-line content
+# Fix for multi-line content
+# Escape % and \n and \r, the runner will unescape in reverse.
+# https://github.community/t/set-output-truncates-multiline-strings/16852
 _outcome="${_outcome//'%'/'%25'}"
 _outcome="${_outcome//$'\n'/'%0A'}"
+_outcome="${_outcome//$'\r'/'%0D'}"
 echo "::set-output name=outcome::$_outcome"
