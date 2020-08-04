@@ -24,4 +24,7 @@ else
   echo "Command is not currently supported."
 fi
 
+# Encode for multi-line content
+_outcome="${_outcome//'%'/'%25'}"
+_outcome="${_outcome//$'\n'/'%0A'}"
 echo "::set-output name=outcome::$_outcome"
