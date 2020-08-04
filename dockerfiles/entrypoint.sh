@@ -2,17 +2,31 @@
 
 set -e
 
-exec >_stdout
+_STDOUT_FILE="_stdout"
 
-if [ $2 = "show" ]
-then
-  cd ${GITHUB_WORKSPACE}/live/biz/consul-servers
-#   terraform init -input=false -backend-config="backend.hcl" -no-color
-  terraform show -json -no-color ${TFPLAN}
-else
+cd ${GITHUB_WORKSPACE}/${_TF_CONFIG_PATH}
+
+if [ $2 = "show" ]; then 
+  terraform init -input=false -backend-config="backend.hcl" -no-color
+#   terraform show -json -no-color ${TFPLAN}
   exec "$@"
+elif [ $2 = "init" ]; then
+  exec "$@"
+elif [ $2 = "fmt" ]; then 
+  exec "$@"
+elif [ $2 = "validate" ]; then 
+  exec "$@"
+elif [ $2 = "plan" ]; then 
+  exec "$@"
+elif [ $2 = "apply" ]; then
+  exec "$@"
+elif [ $2 = "destroy" ]; then 
+  exec "$@"
+else
+  # EXIT with non-zero return value
 fi
 
 exec >/dev/tty
-_outcome=$(cat _stdout)
+
+_outcome=$(cat $_STDOUT_FILE)
 echo "::set-output name=outcome::$_outcome"
