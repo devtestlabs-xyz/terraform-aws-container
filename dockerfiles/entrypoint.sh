@@ -26,7 +26,7 @@ else
   echo "Command is not currently supported."
 fi
 
-exec >/dev/tty
+# exec >/dev/tty
 
 _outcome=$(cat $_STDOUT_FILE)
 echo "::set-output name=outcome::$_outcome"
