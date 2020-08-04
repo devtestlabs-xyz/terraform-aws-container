@@ -7,6 +7,8 @@ touch $_STDOUT_FILE
 
 cd ${GITHUB_WORKSPACE}/${_TF_CONFIG_PATH}
 
+exec &> >(tee -a "$STDOUT_FILE")
+
 if [ "$2" = "show" ]; then 
   terraform init -input=false -backend-config="backend.hcl" -no-color
 #   terraform show -json -no-color ${TFPLAN}
