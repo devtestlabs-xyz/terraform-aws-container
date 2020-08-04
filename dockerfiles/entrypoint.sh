@@ -2,8 +2,8 @@
 
 set -e
 
-_STDOUT_FILE="_stdout"
-touch $_STDOUT_FILE
+STDOUT_FILE="_stdout"
+touch $STDOUT_FILE
 
 cd ${GITHUB_WORKSPACE}/${_TF_CONFIG_PATH}
 
@@ -31,5 +31,5 @@ fi
 
 # exec >/dev/tty
 
-_outcome=$(cat $_STDOUT_FILE)
+_outcome=$(cat $STDOUT_FILE)
 echo "::set-output name=outcome::$_outcome"
