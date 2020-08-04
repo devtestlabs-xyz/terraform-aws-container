@@ -2,13 +2,17 @@
 
 set -e
 
+exec >_stdout
+
 if [ $2 = "show" ]
 then
   cd ${GITHUB_WORKSPACE}/live/biz/consul-servers
-  terraform init -input=false -backend-config="backend.hcl" -no-color
-  _outcome=$(terraform show -json -no-color ${TFPLAN} 2>&1)
+#   terraform init -input=false -backend-config="backend.hcl" -no-color
+  terraform show -json -no-color ${TFPLAN}
 else
-  _outcome=$(exec "$@" 2>&1)
+  exec "$@"
 fi
 
+exec >/dev/tty
+_outcome=$(cat _stdout)
 echo "::set-output name=outcome::$_outcome"
