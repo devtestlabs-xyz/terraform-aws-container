@@ -2,34 +2,31 @@
 
 set -e
 
-STDOUT_FILE="_stdout"
-touch $STDOUT_FILE
+#STDOUT_FILE="_stdout"
+#touch $STDOUT_FILE
 
 cd ${GITHUB_WORKSPACE}/${_TF_CONFIG_PATH}
 
-exec &> >(tee -a "$STDOUT_FILE")
+#exec &> >(tee -a "$STDOUT_FILE")
 
 if [ "$2" = "show" ]; then 
   terraform init -input=false -backend-config="backend.hcl" -no-color
 #   terraform show -json -no-color ${TFPLAN}
-  exec "$@"
+  _outcome=$(exec "$@")
 elif [ "$2" = "init" ]; then
-  exec "$@"
+  _outcome=$(exec "$@")
 elif [ "$2" = "fmt" ]; then 
-  exec "$@"
+  _outcome=$(exec "$@")
 elif [ "$2" = "validate" ]; then 
-  exec "$@"
+  _outcome=$(exec "$@")
 elif [ "$2" = "plan" ]; then 
-  exec "$@"
+  _outcome=$(exec "$@")
 elif [ "$2" = "apply" ]; then
-  exec "$@"
+  _outcome=$(exec "$@")
 elif [ "$2" = "destroy" ]; then 
-  exec "$@"
+  _outcome=$(exec "$@")
 else
   echo "Command is not currently supported."
 fi
 
-# exec >/dev/tty
-
-_outcome=$(cat $STDOUT_FILE)
 echo "::set-output name=outcome::$_outcome"
