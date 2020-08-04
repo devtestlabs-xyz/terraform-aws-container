@@ -23,7 +23,7 @@ elif [ $2 = "apply" ]; then
 elif [ $2 = "destroy" ]; then 
   exec "$@"
 else
-  # EXIT with non-zero return value
+  echo "Command is not currently supported."
 fi
 
 exec >/dev/tty
