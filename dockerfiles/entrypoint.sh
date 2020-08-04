@@ -7,25 +7,25 @@ cd ${GITHUB_WORKSPACE}/${_TF_WORKING_DIR}
 
 if [ "$1" = "show" ]; then 
   terraform init -input=false -backend-config="backend.hcl" -no-color
-  _outcome=$(terraform $1 $2); _exitcode=$?
+  _outcome=$(terraform $1 $2 2>&1); _exitcode=$?
 
 elif [ "$1" = "init" ]; then
-  _outcome=$(terraform $1 $2); _exitcode=$?
+  _outcome=$(terraform $1 $2 2>&1); _exitcode=$?
 
 elif [ "$1" = "fmt" ]; then 
-  _outcome=$(terraform $1 $2); _exitcode=$?
+  _outcome=$(terraform $1 $2 2>&1); _exitcode=$?
 
 elif [ "$1" = "validate" ]; then 
-  _outcome=$(terraform $1 $2); _exitcode=$?
+  _outcome=$(terraform $1 $2 2>&1); _exitcode=$?
 
 elif [ "$1" = "plan" ]; then 
-  _outcome=$(terraform $1 $2); _exitcode=$?
+  _outcome=$(terraform $1 $2 2>&1); _exitcode=$?
 
 elif [ "$1" = "apply" ]; then
-  _outcome=$(terraform $1 $2); _exitcode=$?
+  _outcome=$(terraform $1 $2 2>&1); _exitcode=$?
 
 # elif [ "$1" = "destroy" ]; then 
-#   _outcome=$(terraform $1 $2)
+#   _outcome=$(terraform $1 $2 2>&1)
 
 else
   echo "Command is not currently supported."; _exitcode=3
