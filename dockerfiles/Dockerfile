@@ -24,10 +24,6 @@ ENV APK_VIRTUAL_PACKAGE_DEPS \
   gnupg \
   wget
 
-# Scripted entrypoint to allow specialized terraform commands and output when container is used in Github actions
-COPY entrypoint.sh /usr/local/bin
-RUN ln -s /usr/local/bin/entrypoint.sh / # backwards compat
-
 # Terraform environment variables
 ENV TF_PLUGIN_CACHE_DIR=/.terraform/plugin-cache
 
@@ -124,9 +120,9 @@ RUN set -x \
     && terraform init
 
 # /terraform will contain all terraform assets including mounted live configurations
-# WORKDIR /terraform-live
+WORKDIR /terraform-live
 
-# VOLUME [ "/terraform-live" ]
+VOLUME [ "/terraform-live" ]
 
 # Credentials
 ENV AWS_ACCESS_KEY_ID=UNDEFINED
@@ -143,9 +139,8 @@ ENV AWS_DEFAULT_REGION=UNDEFINED
 # ECS and CodeBuild Task Roles
 ##ENV AWS_CONTAINER_CREDENTIALS_RELATIVE_URI=UNDEFINED
 
-# ENTRYPOINT [ "terraform" ]
-# CMD "$@"
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT [ "terraform" ]
+CMD "$@"
 
 # Labels
 LABEL maintainer="Ryan Craig"
