@@ -115,7 +115,6 @@ RUN set -x \
     && rm -f terraform-provider-random_${RANDOM_PROVIDER_VERSION}_linux_amd64.zip terraform-provider-random_${RANDOM_PROVIDER_VERSION}_SHA256SUMS terraform-provider-random_${RANDOM_PROVIDER_VERSION}_SHA256SUMS.sig \
     && rm -f terraform-provider-null_${NULL_PROVIDER_VERSION}_linux_amd64.zip terraform-provider-null_${NULL_PROVIDER_VERSION}_SHA256SUMS terraform-provider-null_${NULL_PROVIDER_VERSION}_SHA256SUMS.sig \
     && rm -f releases_public_key \
-    && chmod +x /usr/local/bin/entrypoint.sh \
     && \
     echo "==> Initializing installed Terraform providers..." \
     && terraform init
