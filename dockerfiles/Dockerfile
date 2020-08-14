@@ -29,6 +29,7 @@ ENV TF_PLUGIN_CACHE_DIR=/.terraform/plugin-cache
 
 COPY providers-init.tf .
 
+# Build
 RUN set -x \
     && \
     echo "==> Installing required APK packages..." \
