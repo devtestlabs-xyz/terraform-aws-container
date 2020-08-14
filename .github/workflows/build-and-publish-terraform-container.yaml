@@ -15,8 +15,8 @@ on:
 
 env:
   _GH_BASE_URI: https://github.com/
-   _IMAGE_VARIANT: aws
-  #_IMAGE_VARIANT: gh-test
+  _IMAGE_VARIANT: aws
+  # _IMAGE_VARIANT: gh-test
     
 jobs:
   build:
